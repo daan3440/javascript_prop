@@ -26,10 +26,6 @@ let unKnown = undefined; //Undefined
 let selectedColor = null; //Undefined
 
 
-
-
-
-
 //Object
 
 //Symbol är ännu en primitiv
