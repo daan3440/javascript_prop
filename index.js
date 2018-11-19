@@ -1,11 +1,11 @@
 
 //Kommentar
 console.log('OK, Mäster O!');
-let name = 'Yeanne';
+let name = 'Yeanne d\'Arc';
 console.log(name);
 
 let firstName = 'Daniel';
-let surName = 'Mojave';
+let surName = 'Mojansson';
 console.log(firstName);
 console.log(surName);
 
