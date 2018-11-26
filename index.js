@@ -1,67 +1,56 @@
-
-//Kommentar
-console.log('OK, Mäster O!');
-let name = 'Yeanne';
-console.log(name);
-
-let firstName = 'Daniel';
-let surName = 'Mojave';
-console.log(firstName);
-console.log(surName);
-
-//constant - kan inte ändras
-const intRate = 0.3;
-console.log(intRate);
-
-//String
-//Number
-//Boolean
-//Undefined
-//null
-
-let isApproved = false;
-console.log(isApproved);
-//Undefined - ka användas som en slags temp
-let unKnown = undefined; //Undefined
-let selectedColor = null; //Undefined
-
-
-//Object
-
-//Symbol är ännu en primitiv
-let age = 30;
-let person = {
-name: 'Daniel',
-age: 12
+var myObject = {
 };
-//dont notation
-person.name = 'Doktor';
 
-//bracjet notation
-//om det körs i runtime så kan bracket användas
+myObject.create = function (prototypeList, name) {
+    o = {};
+    o.name = name;
+    o.prototypeList = prototypeList;
+    //o.call = this.call;
+    //o.create = this.create;
+    //o.findFunction = this.findFunction;
+    o.__proto__ = this;
+    return o;
+};
 
-let selection = 'name';
-//person['name'] = 'Yunes';
-person['selection'] = 'Yunes';
+myObject.call = function (functionName, args) {
+    if (!(typeof this[functionName] === 'function')) {
+        if (this.prototypeList !== null) {
+            for (i = 0; i < this.prototypeList.length; i++) {
+                return this.prototypeList[i].call(functionName, args);
+            }
+        }
+    } else {
+        return this[functionName](args);;
+    }
+};
 
-console.log(person.name);
+myObject.addPrototype = function (parent) {
+    if(this.checkParentTree(parent) || parent.checkParentTree(this)){
+        console.log("Cant add idiot");
+    } else {
+        console.log("inne i else");
+        if(this.prototypeList === null){
+            this.prototypeList = [];
+        }
+        console.log(this.prototypeList);
+        this.prototypeList.push(parent);
+        console.log(this.prototypeList);
+    }
+};
 
-//Array
-let selectedColors = ['red']; 
-selectedColors[7] = 1;
-console.log(selectedColors.length);
-for(let i = 0; i < selectedColors.length; i++){
-    console.log(selectedColors[i]);
-}
-
-
-
-
-//Function
-function greet(name, surName){
-    console.log('Ok, ' + name + ' ' + surName + '!');
-}
-
-//greet('Johnny');
-//greet('Mary');
-greet(name, surName);
+myObject.checkParentTree = function (wantedParent) {
+    parentFound = false;
+    if (this.prototypeList !== null) {
+        for (i = 0; i < this.prototypeList.length; i++) {
+            if (wantedParent == this.prototypeList[i]) {
+                return true;
+            } else {
+                parentFound = this.prototypeList[i].checkParentTree(wantedParent);
+                if (parentFound) {
+                    return true;
+                }
+            }
+        }
+    } 
+    return false;
+};
