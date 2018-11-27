@@ -76,3 +76,4 @@ var obj4 = myObject.create([obj1]);
 
 // obj0.addPrototype(obj1);
 obj4.addPrototype(obj3);
+//test för git
