@@ -74,5 +74,5 @@ console.log("should print ’func0: hello’ ->", result);
 //var obj1 = myObject.create([obj0]);
 var obj4 = myObject.create([obj1]);
 
-obj0.addPrototype(obj1);
+// obj0.addPrototype(obj1);
 obj4.addPrototype(obj3);
