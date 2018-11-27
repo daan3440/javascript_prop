@@ -1,3 +1,4 @@
+
 var myObject = {
 };
 
@@ -7,7 +8,6 @@ myObject.create = function (prototypeList, name) {
     o.prototypeList = prototypeList;
     //o.call = this.call;
     //o.create = this.create;
-    //o.findFunction = this.findFunction;
     o.__proto__ = this;
     return o;
 };
@@ -15,37 +15,38 @@ myObject.create = function (prototypeList, name) {
 myObject.call = function (functionName, args) {
     if (!(typeof this[functionName] === 'function')) {
         if (this.prototypeList !== null) {
-            for (i = 0; i < this.prototypeList.length; i++) {
-                return this.prototypeList[i].call(functionName, args);
+            for (let i = 0; i < this.prototypeList.length; i++) {
+                let result = this.prototypeList[i].call(functionName, args);
+                if(result != undefined){
+                    return result;
+                }   
             }
         }
     } else {
-        return this[functionName](args);;
+        return this[functionName].apply(null, args);
     }
 };
 
-myObject.addPrototype = function (parent) {
-    if(this.checkParentTree(parent) || parent.checkParentTree(this)){
-        console.log("Cant add idiot");
+myObject.addPrototype = function (wantedParent) {
+    if(wantedParent.checkInheritanceTreeForChild(this)){
+        console.log("Error: Circular Inheritance not allowed!");
     } else {
-        console.log("inne i else");
         if(this.prototypeList === null){
             this.prototypeList = [];
         }
-        console.log(this.prototypeList);
-        this.prototypeList.push(parent);
-        console.log(this.prototypeList);
+        if(!this.prototypeList.includes(wantedParent)){
+            this.prototypeList.push(wantedParent);
+        }
     }
 };
 
-myObject.checkParentTree = function (wantedParent) {
-    parentFound = false;
+myObject.checkInheritanceTreeForChild = function (potentialChild) {
     if (this.prototypeList !== null) {
-        for (i = 0; i < this.prototypeList.length; i++) {
-            if (wantedParent == this.prototypeList[i]) {
+        for (let i = 0; i < this.prototypeList.length; i++) {
+            if (potentialChild === this.prototypeList[i]) {
                 return true;
             } else {
-                parentFound = this.prototypeList[i].checkParentTree(wantedParent);
+                parentFound = this.prototypeList[i].checkInheritanceTreeForChild(potentialChild);
                 if (parentFound) {
                     return true;
                 }
@@ -55,24 +56,29 @@ myObject.checkParentTree = function (wantedParent) {
     return false;
 };
 
-
-//Testpart 1
-var obj0 = myObject.create(null);
-obj0.func = function(arg) { return "func0: " + arg; };
-var obj1 = myObject.create([obj0]);
-var obj2 = myObject.create([]);
+var obj0 = myObject.create(null, "obj0");
+obj0.func = function(arg, args) { return "func0: " + arg; };
+var obj1 = myObject.create([obj0], "obj1");
+var obj2 = myObject.create([], "obj2");
 obj2.func = function(arg) { return "func2: " + arg; };
-var obj3 = myObject.create([obj1, obj2]);
-var result = obj3.call("func", ["hello"])  ;
+var obj3 = myObject.create([obj1, obj2], "obj3");
+var result = obj3.call("func", ["hello"]) ;
 console.log("should print ’func0: hello’ ->", result);
 
-result = obj0.call("func", ["hello"]);
-console.log("should print ’func0: hello’ ->", result);
 
-//Tast Part 2
-//var obj0 = myObject.create(null);
-//var obj1 = myObject.create([obj0]);
-var obj4 = myObject.create([obj1]);
+// var obj0 = myObject.create(null, "obj0");
+// var obj1 = myObject.create([obj0], "obj1");
+// var obj3 = myObject.create([obj1], "obj3");
+// var obj4 = myObject.create([obj1, obj3], "obj4");
+// var obj5 = myObject.create([obj3],"obj5");
+// var obj2 = myObject.create([obj0, obj5],"obj2");
 
-// obj0.addPrototype(obj1);
-obj4.addPrototype(obj3);
+// obj3.addPrototype(obj2);
+
+// obj3.addPrototype(obj1);
+
+// obj5.addPrototype(obj4);
+
+// console.log(obj2);
+// console.log(obj5);
+// console.log(obj3);
