@@ -19,8 +19,8 @@ function createClass(className, superClassList) {
         lookUp: function (funcName, parameters) {
             if (!(typeof this[funcName] === 'function')) {
                 if (this.superList !== null) {
-                    for (var i = 0; i < this.superList.length; i++) {
-                        var result = this.superList[i].lookUp(funcName, parameters);
+                    for (let i = 0; i < this.superList.length; i++) {
+                        let result = this.superList[i].lookUp(funcName, parameters);
                         if (result != undefined) {
                             return result;
                         }
@@ -44,5 +44,11 @@ class2.func = function (arg) { return "func2: " + arg; };
 var class3 = createClass("Class3", [class1, class2]);
 var obj3 = class3.new();
 var result = obj3.call("func", ["hello"]);
+
+console.log(result);
+
+
+var obj0 = class0.new();
+result = obj0.call("func", ["hello"]);
 
 console.log(result);
