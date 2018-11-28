@@ -46,8 +46,8 @@ myObject.checkInheritanceTreeForChild = function (potentialChild) {
             if (potentialChild === this.prototypeList[i]) {
                 return true;
             } else {
-                parentFound = this.prototypeList[i].checkInheritanceTreeForChild(potentialChild);
-                if (parentFound) {
+                
+                if (this.prototypeList[i].checkInheritanceTreeForChild(potentialChild)) {
                     return true;
                 }
             }
@@ -66,14 +66,14 @@ var result = obj3.call("func", ["hello"]) ;
 console.log("should print ’func0: hello’ ->", result);
 
 
-// var obj0 = myObject.create(null, "obj0");
-// var obj1 = myObject.create([obj0], "obj1");
-// var obj3 = myObject.create([obj1], "obj3");
-// var obj4 = myObject.create([obj1, obj3], "obj4");
-// var obj5 = myObject.create([obj3],"obj5");
-// var obj2 = myObject.create([obj0, obj5],"obj2");
+var obj0 = myObject.create(null, "obj0");
+var obj1 = myObject.create([obj0], "obj1");
+var obj3 = myObject.create([obj1], "obj3");
+var obj4 = myObject.create([obj1, obj3], "obj4");
+var obj5 = myObject.create([obj3],"obj5");
+var obj2 = myObject.create([obj0, obj5],"obj2");
 
-// obj3.addPrototype(obj2);
+obj3.addPrototype(obj2);
 
 // obj3.addPrototype(obj1);
 
