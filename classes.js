@@ -32,34 +32,25 @@ function createClass(className, superClassList) {
             }
         },
         addSuperClass: function (makeSuperClass) {
-            console.log("addSuperClass IN");
             if (makeSuperClass.checkNoneValidSuperClass(this)) {
-                console.log("checkNoneValid is True");
                 console.log("Error: invalid superClass, circular inheritance detected.");
             } else {
-                console.log("Else IN");
                 if (this.superList === null) {
                     this.superList = [];
-                    console.log("superList [] made");
                 }
-                console.log("Else out");
-            //     if (!this.superList.includes(makeSuperClass)){ 
-            //     this.superList.push(makeSuperClass);
-            // }
-            this.superList.push(makeSuperClass);
+                if (!this.superList.includes(makeSuperClass)){ 
+                this.superList.push(makeSuperClass);
+            }
         }
 
     },
         checkNoneValidSuperClass: function (possibleChildClass) {
-            console.log("checkNoneValidSuperClass IN");
             // superClassFound = false;
-            console.log("superClassFound set");
             if (this.superList !== null) {
                 for (let i = 0; i < this.superList.length; i++) {
                     if (this.superList[i] === possibleChildClass) {
                         return true;
                     } else {
-                        console.log("set superClassFound");
                         // superClassFound = this.superList[i].checkNoneValidSuperClass(possibleSuperclass);
                         if (this.superList[i].checkNoneValidSuperClass(possibleChildClass)) {
                             return true;
@@ -85,6 +76,11 @@ var obj3 = class3.new();
 var result = obj3.call("func", ["hello"]);
 
 console.log(result);
+console.log("class4 + class1");
 class4.addSuperClass(class1);
-class0.addSuperClass(class1);
+console.log("class1 + class0");
 class1.addSuperClass(class0);
+
+console.log(class1 );
+console.log("class0 + class1: fail" );
+class0.addSuperClass(class1);
