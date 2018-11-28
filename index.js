@@ -79,12 +79,6 @@ console.log("should print ’func0: hello’ ->", result);
 
 // obj5.addPrototype(obj4);
 
-<<<<<<< HEAD
-// obj0.addPrototype(obj1);
-obj4.addPrototype(obj3);
-//test för git
-=======
 // console.log(obj2);
 // console.log(obj5);
 // console.log(obj3);
->>>>>>> origin/master_rev1
