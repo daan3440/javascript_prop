@@ -83,4 +83,5 @@ class1.addSuperClass(class0);
 
 console.log(class1 );
 console.log("class0 + class1: fail" );
+
 class0.addSuperClass(class1);
