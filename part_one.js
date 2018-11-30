@@ -9,18 +9,27 @@ myObject.create = function (prototypeList, name) {
     return o;
 };
 
-myObject.call = function (functionName, args) {
+myObject.call = function(functionName, args) {
+	let result = this.lookUp(functionName, args);
+	if(result === undefined){
+		console.log("Error, no function with the name " + functionName);
+	} else {
+		return result[0];
+	}		
+}
+
+myObject.lookUp = function (functionName, args) {
     if (!(typeof this[functionName] === 'function')) {
         if (this.prototypeList !== null) {
             for (let i = 0; i < this.prototypeList.length; i++) {
-                let result = this.prototypeList[i].call(functionName, args);
+                let result = this.prototypeList[i].lookUp(functionName, args);
                 if(result != undefined){
                     return result;
                 }   
             }
         }
     } else {
-        return this[functionName].apply(null, args);
+        return [this[functionName].apply(null, args)];
     }
 };
 
@@ -43,8 +52,8 @@ myObject.checkInheritanceTreeForChild = function (potentialChild) {
             if (potentialChild === this.prototypeList[i]) {
                 return true;
             } else {
-                
-                if (this.prototypeList[i].checkInheritanceTreeForChild(potentialChild)) {
+                parentFound = this.prototypeList[i].checkInheritanceTreeForChild(potentialChild);
+                if (parentFound) {
                     return true;
                 }
             }

@@ -6,10 +6,19 @@ function createClass(className, superClassList) {
             o = {};
             o.class = this;
             o.call = function (funcName, parameters) {
+                let result = this.lookUp(funcName, parameters);
+                if (result === undefined) {
+                    console.log("Error, no function with the name " + functionName);
+                } else {
+                    return result[0];
+                }
+            }
+
+            o.lookUp = function (funcName, parameters) {
                 if (!(typeof this[funcName] === 'function')) {
                     return this.class.lookUp(funcName, parameters);
                 } else {
-                    return this[funcName].apply(null, parameters);
+                    return [this[funcName].apply(null, parameters)];
                 }
 
             };
@@ -27,7 +36,7 @@ function createClass(className, superClassList) {
                     }
                 }
             } else {
-                return this[funcName].apply(null, parameters);
+                return [this[funcName].apply(null, parameters)];
             }
         },
         addSuperClass: function (makeSuperClass) {
@@ -37,12 +46,12 @@ function createClass(className, superClassList) {
                 if (this.superList === null) {
                     this.superList = [];
                 }
-                if (!this.superList.includes(makeSuperClass)){ 
-                this.superList.push(makeSuperClass);
+                if (!this.superList.includes(makeSuperClass)) {
+                    this.superList.push(makeSuperClass);
+                }
             }
-        }
 
-    },
+        },
         checkNoneValidSuperClass: function (possibleChildClass) {
             // superClassFound = false;
             if (this.superList !== null) {
@@ -60,23 +69,23 @@ function createClass(className, superClassList) {
             return false;
         },
 
-};
-return myClass;
+    };
+    return myClass;
 }
 
 //check 1
 var class0 = createClass("Class0", null);
-class0.func = function(arg) { return "func0: " + arg; };
+class0.func = function (arg) { return "func0: " + arg; };
 var class1 = createClass("Class1", [class0]);
 var class2 = createClass("Class2", []);
-class2.func = function(arg) { return "func2: " + arg; };
+class2.func = function (arg) { return "func2: " + arg; };
 var class3 = createClass("Class3", [class1, class2]);
 var obj3 = class3.new();
 var result = obj3.call("func", ["hello"]);
 console.log(result);
 //Check 2
 class0 = createClass("Class0", null);
-class0.func = function(arg) { return "func0: " + arg; };
+class0.func = function (arg) { return "func0: " + arg; };
 class1 = createClass("Class1", [class0]);
 class2 = createClass("Class2", []);
 class3 = createClass("Class3", [class2, class1]);
@@ -85,7 +94,7 @@ result = obj3.call("func", ["hello"]);
 console.log(result);
 //check 3
 class0 = createClass("Class0", null);
-class0.func = function(arg) { return "func0: " + arg; };
+class0.func = function (arg) { return "func0: " + arg; };
 var obj0 = class0.new();
 result = obj0.call("func", ["hello"]);
 console.log(result);
