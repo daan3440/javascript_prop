@@ -15,7 +15,6 @@ function createClass(className, superClassList) {
             };
             return o;
         },
-        //TODO kanske kolla om vi kan förändra scope till Class.lookup()
         lookUp: function (funcName, parameters) {
             if (!(typeof this[funcName] === 'function')) {
                 if (this.superList !== null) {
