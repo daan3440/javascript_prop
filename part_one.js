@@ -25,7 +25,7 @@ myObject.call = function (functionName, args) {
 };
 
 myObject.addPrototype = function (wantedParent) {
-    if(wantedParent.checkInheritanceTreeForChild(this)){
+    if(wantedParent === this || wantedParent.checkInheritanceTreeForChild(this)){
         console.log("Error: Circular Inheritance not allowed!");
     } else {
         if(this.prototypeList === null){
