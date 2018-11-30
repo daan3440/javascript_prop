@@ -1,4 +1,3 @@
-
 var myObject = {
 };
 
@@ -6,8 +5,6 @@ myObject.create = function (prototypeList, name) {
     o = {};
     o.name = name;
     o.prototypeList = prototypeList;
-    //o.call = this.call;
-    //o.create = this.create;
     o.__proto__ = this;
     return o;
 };
@@ -28,7 +25,7 @@ myObject.call = function (functionName, args) {
 };
 
 myObject.addPrototype = function (wantedParent) {
-    if(wantedParent.checkInheritanceTreeForChild(this)){
+    if(wantedParent === this || wantedParent.checkInheritanceTreeForChild(this)){
         console.log("Error: Circular Inheritance not allowed!");
     } else {
         if(this.prototypeList === null){
@@ -56,6 +53,7 @@ myObject.checkInheritanceTreeForChild = function (potentialChild) {
     return false;
 };
 
+//check 1
 var obj0 = myObject.create(null, "obj0");
 obj0.func = function(arg, args) { return "func0: " + arg; };
 var obj1 = myObject.create([obj0], "obj1");
@@ -65,20 +63,39 @@ var obj3 = myObject.create([obj1, obj2], "obj3");
 var result = obj3.call("func", ["hello"]) ;
 console.log("should print ’func0: hello’ ->", result);
 
+//check 2
+obj0 = myObject.create(null);
+obj0.func = function(arg) { return "func0: " + arg; };
+obj1 = myObject.create([obj0]);
+obj2 = myObject.create([]);
+obj3 = myObject.create([obj2, obj1]);
+result = obj3.call("func", ["hello"]);
+console.log("should print ’func0: hello’ ->", result);
+//Check 3
+obj0 = myObject.create(null);
+obj0.func = function(arg) { return "func0: " + arg; };
+result = obj0.call("func", ["hello"]);
+console.log("should print ’func0: hello’ ->", result);
 
-var obj0 = myObject.create(null, "obj0");
-var obj1 = myObject.create([obj0], "obj1");
-var obj3 = myObject.create([obj1], "obj3");
-var obj4 = myObject.create([obj1, obj3], "obj4");
-var obj5 = myObject.create([obj3],"obj5");
-var obj2 = myObject.create([obj0, obj5],"obj2");
+//check circular prevention
+var obj0 = myObject.create(null);
+var obj1 = myObject.create([obj0]);
+obj0.addPrototype(obj1);
 
-obj3.addPrototype(obj2);
+//egna tester
+// var obj0 = myObject.create(null, "obj0");
+// var obj1 = myObject.create([obj0], "obj1");
+// var obj3 = myObject.create([obj1], "obj3");
+// var obj4 = myObject.create([obj1, obj3], "obj4");
+// var obj5 = myObject.create([obj3],"obj5");
+// var obj6 = myObject.create([obj0, obj5],"obj6");
+// var obj2 = myObject.create([obj0, obj5],"obj2b");
 
+// obj3.addPrototype(obj2);
 // obj3.addPrototype(obj1);
-
 // obj5.addPrototype(obj4);
 
 // console.log(obj2);
 // console.log(obj5);
 // console.log(obj3);
+// console.log(obj6);
